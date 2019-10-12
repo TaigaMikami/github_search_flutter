@@ -14,14 +14,16 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
 
   bool searching = false, api_no_limit = false;
   String url = "https://api.github.com/search/repositories?q=";
+  String sort =  "&sort=stars";
   var resBody;
 
   Future _getRepositories(String text) async {
     setState(() {
       searching = true;
+      _repository.clear();
     });
     _textController.clear();
-    var res = await http.get(Uri.encodeFull(url + text), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(url + text + sort), headers: {"Accept": "application/json"});
     setState(() {
       resBody = json.decode(res.body);
     });
@@ -77,6 +79,42 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     );
   }
 
+  DropdownButton _sortDown() => DropdownButton<String> (
+    items: [
+      DropdownMenuItem(
+        value: "&sort=stars",
+        child: Text(
+          "Star",
+        ),
+      ),
+      DropdownMenuItem(
+        value: "&sort=forks",
+        child: Text(
+          "Fork",
+        ),
+      ),
+    ],
+    onChanged: (value) {
+      setState(() {
+        sort = value;
+      });
+    },
+    value: sort,
+  );
+
+  Widget _buildDropDown() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            child: _sortDown(),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget loading(){
     if(searching){
       return new Container(
@@ -114,6 +152,12 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     return Container(
       child: Column(
         children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+            child: _buildDropDown(),
+          ),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
