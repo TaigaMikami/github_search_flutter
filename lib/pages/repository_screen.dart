@@ -15,6 +15,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
   bool searching = false, api_no_limit = false;
   String url = "https://api.github.com/search/repositories?q=";
   String sort =  "&sort=stars";
+  int count = 10;
   var resBody;
 
   Future _getRepositories(String text) async {
@@ -28,7 +29,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
       resBody = json.decode(res.body);
     });
     var resItems = resBody['items'];
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < count; i++) {
       if (resItems[i]['owner']['avatar_url'] != null) {
         Repository repo = new Repository(
           full_name: resItems[i]['full_name'],
@@ -67,6 +68,12 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
               ),
             ),
             Container(
+              child: _sortDown()
+            ),
+            Container(
+              child: _countDown(),
+            ),
+            Container(
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: Icon(Icons.search),
@@ -93,6 +100,12 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
           "Fork",
         ),
       ),
+      DropdownMenuItem(
+        value: "&sort=updated",
+        child: Text(
+          "Updated",
+        ),
+      ),
     ],
     onChanged: (value) {
       setState(() {
@@ -102,6 +115,35 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     value: sort,
   );
 
+  DropdownButton _countDown() => DropdownButton<int> (
+    items: [
+      DropdownMenuItem(
+        value: 10,
+        child: Text(
+          "10",
+        ),
+      ),
+      DropdownMenuItem(
+        value: 20,
+        child: Text(
+          "20",
+        ),
+      ),
+      DropdownMenuItem(
+        value: 50,
+        child: Text(
+          "50",
+        ),
+      ),
+    ],
+    onChanged: (value) {
+      setState(() {
+        count = value;
+      });
+    },
+    value: count,
+  );
+
   Widget _buildDropDown() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8.0),
@@ -109,6 +151,9 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
         children: <Widget>[
           Container(
             child: _sortDown(),
+          ),
+          Container(
+            child: _countDown(),
           )
         ],
       ),
@@ -152,12 +197,6 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     return Container(
       child: Column(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-            ),
-            child: _buildDropDown(),
-          ),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
