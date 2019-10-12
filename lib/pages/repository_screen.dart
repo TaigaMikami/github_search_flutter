@@ -25,29 +25,27 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     setState(() {
       resBody = json.decode(res.body);
     });
-    print(resBody["items"][0]);
-    String avatar_url = resBody["items"][0]['owner']['avatar_url'];
-    String full_name = resBody["items"][0]['full_name'];
-    int stargazers_count = resBody["items"][0]['stargazers_count'] == null ? 0 : resBody["items"][0]['stargazers_count'];
-    int forks = resBody["items"][0]['forks'] == null ? 0 : resBody["items"][0]['forks'];
-    if (resBody["items"][0]['owner']['avatar_url'] != null) {
-      Repository repo = new Repository(
-        full_name: full_name,
-        image: avatar_url,
-        stargazers_count: stargazers_count,
-        forks: forks,
-        html_url: resBody["items"][0]['html_url'],
-        animationController: AnimationController(
-          duration: Duration(milliseconds: 700),
-          vsync: this,
-        ),
-      );
-      setState(() {
-        _repository.insert(0, repo);
-      });
-      repo.animationController.forward();
-    } else {
-      api_no_limit = true;
+    var resItems = resBody['items'];
+    for (int i = 0; i < 10; i++) {
+      if (resItems[i]['owner']['avatar_url'] != null) {
+        Repository repo = new Repository(
+          full_name: resItems[i]['full_name'],
+          image: resItems[i]['owner']['avatar_url'],
+          stargazers_count: resItems[i]['stargazers_count'],
+          forks: resItems[i]['forks'],
+          html_url: resItems[i]['html_url'],
+          animationController: AnimationController(
+            duration: Duration(milliseconds: 700),
+            vsync: this,
+          ),
+        );
+        setState(() {
+          _repository.insert(_repository.length, repo);
+        });
+        repo.animationController.forward();
+      } else {
+        api_no_limit = true;
+      }
     }
     searching = false;
   }
