@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:badges/badges.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:html' as html;
@@ -42,18 +43,38 @@ class RepositoryCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            repository.full_name,
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 15.0),),
+                          Chip(
+                            backgroundColor: Colors.greenAccent,
+                            padding: EdgeInsets.all(0.0),
+                            label: Text(repository.language, style: TextStyle(color: Colors.white),),
+                          )
+                        ]
+                      ),
                       Text(
-                        repository.full_name,
-                        style: Theme.of(context).textTheme.title,
+                        repository.description,
+                        style: TextStyle(fontSize: 12.0),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 30.0),),
                       Row(
                         children: <Widget>[
-                          Icon(Icons.star),
-                          Text('${repository.stargazers_count}'),
+                          Icon(Icons.star, size: 15.0,),
+                          Text(' ${repository.stargazers_count}'),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.codeBranch),
-                          Text('${repository.forks}'),
+                          Icon(FontAwesomeIcons.codeBranch, size: 15.0,),
+                          Text(' ${repository.forks_count}'),
+                          Padding(padding: EdgeInsets.only(right: 15.0),),
+                          Icon(FontAwesomeIcons.eye, size: 15.0,),
+                          Text(' ${repository.watchers_count}'),
+                          Padding(padding: EdgeInsets.only(right: 15.0),),
+                          Icon(FontAwesomeIcons.infoCircle, size: 15.0,),
+                          Text(' ${repository.open_issues_count}'),
                         ],
                       )
                     ],

@@ -32,15 +32,23 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
       resBody = json.decode(res.body);
     });
     var resItems = resBody['items'];
+    print(resItems[0]);
     int itemCount = min(count, resItems.length);
     for (int i = 0; i < itemCount; i++) {
       if (resItems[i]['owner']['avatar_url'] != null) {
         Repository repo = new Repository(
           full_name: resItems[i]['full_name'],
           image: resItems[i]['owner']['avatar_url'],
+          description: resItems[i]['description'],
+          language: resItems[i]['language'],
           stargazers_count: resItems[i]['stargazers_count'],
-          forks: resItems[i]['forks'],
+          forks_count: resItems[i]['forks_count'],
+          watchers_count: resItems[i]['watchers_count'],
+          open_issues_count: resItems[i]['open_issues_count'],
           html_url: resItems[i]['html_url'],
+          home_page: resItems[i]['home_page'],
+          created_at: DateTime.parse(resItems[i]['created_at']),
+          updated_at: DateTime.parse(resItems[i]['updated_at']),
         );
         RepositoryCard repoCard = new RepositoryCard(
           repository: repo,
