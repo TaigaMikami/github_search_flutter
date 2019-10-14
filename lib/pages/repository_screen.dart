@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
+import 'package:github_search/helpers/url_create.dart';
 
 class RepositoryScreen extends StatefulWidget {
   @override
@@ -13,7 +15,6 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
   final TextEditingController _textController = new TextEditingController();
 
   bool searching = false, api_no_limit = false;
-  String url = "https://api.github.com/search/repositories?q=";
   String sort =  "&sort=stars";
   int count = 10;
   var resBody;
@@ -24,12 +25,13 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
       _repository.clear();
     });
     _textController.clear();
-    var res = await http.get(Uri.encodeFull(url + text + sort), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(UrlCreate.repositoryUrl(text, sort)), headers: {"Accept": "application/json"});
     setState(() {
       resBody = json.decode(res.body);
     });
     var resItems = resBody['items'];
-    for (int i = 0; i < count; i++) {
+    int itemCount = min(count, resItems.length);
+    for (int i = 0; i < itemCount; i++) {
       if (resItems[i]['owner']['avatar_url'] != null) {
         Repository repo = new Repository(
           full_name: resItems[i]['full_name'],
