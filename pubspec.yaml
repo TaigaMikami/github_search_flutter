@@ -24,6 +24,7 @@ dependencies:
   http: any
   font_awesome_flutter: any
   badges: any
+  intl: any
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'dart:html' as html;
 
 class RepositoryCard extends StatelessWidget {
@@ -10,12 +11,18 @@ class RepositoryCard extends StatelessWidget {
   final Repository repository;
   final AnimationController animationController;
 
+  String _formatDate(DateTime dateTime) {
+    return (DateFormat.yMMMd()).format(dateTime);
+  }
+
   _launchURL(url) {
     html.window.open(url, '');
   }
 
   @override
   Widget build(BuildContext context) {
+    String home_page = repository.home_page == null ? '' : repository.home_page;
+    String description = repository.description == null ? '' : repository.description;
     return SizeTransition(
       sizeFactor: CurvedAnimation(
         parent: animationController,
@@ -54,14 +61,18 @@ class RepositoryCard extends StatelessWidget {
                             backgroundColor: Colors.greenAccent,
                             padding: EdgeInsets.all(0.0),
                             label: Text(repository.language, style: TextStyle(color: Colors.white, fontSize: 12.0),),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 15.0),),
+                          Text(
+                            home_page
                           )
                         ]
                       ),
                       Text(
-                        repository.description,
+                        description,
                         style: TextStyle(fontSize: 12.0),
                       ),
-                      Padding(padding: EdgeInsets.only(bottom: 30.0),),
+                      Padding(padding: EdgeInsets.only(bottom: 20.0),),
                       Row(
                         children: <Widget>[
                           Icon(Icons.star, size: 15.0,),
@@ -75,6 +86,10 @@ class RepositoryCard extends StatelessWidget {
                           Padding(padding: EdgeInsets.only(right: 15.0),),
                           Icon(FontAwesomeIcons.infoCircle, size: 15.0,),
                           Text(' ${repository.open_issues_count}'),
+                          Padding(padding: EdgeInsets.only(right: 15.0),),
+                          Text('created_at : ${_formatDate(repository.created_at)}'),
+                          Padding(padding: EdgeInsets.only(right: 15.0),),
+                          Text('updated_at : ${_formatDate(repository.updated_at)}'),
                         ],
                       )
                     ],
