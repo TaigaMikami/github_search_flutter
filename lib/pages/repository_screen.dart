@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:github_search/widgets/loading.dart';
 import 'package:github_search/helpers/url_create.dart';
+import 'package:github_search/widgets/repository/repository_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
@@ -12,7 +13,7 @@ class RepositoryScreen extends StatefulWidget {
 }
 
 class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProviderStateMixin {
-  final List<Repository> _repository = <Repository>[];
+  final List<RepositoryCard> _repoCard = <RepositoryCard>[];
   final TextEditingController _textController = new TextEditingController();
 
   bool searching = false, api_no_limit = false;
@@ -23,7 +24,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
   Future _getRepositories(String text) async {
     setState(() {
       searching = true;
-      _repository.clear();
+      _repoCard.clear();
     });
     _textController.clear();
     var res = await http.get(Uri.encodeFull(UrlCreate.repositoryUrl(text, sort)), headers: {"Accept": "application/json"});
@@ -40,15 +41,18 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
           stargazers_count: resItems[i]['stargazers_count'],
           forks: resItems[i]['forks'],
           html_url: resItems[i]['html_url'],
-          animationController: AnimationController(
+        );
+        RepositoryCard repoCard = new RepositoryCard(
+          repository: repo,
+            animationController: AnimationController(
             duration: Duration(milliseconds: 700),
             vsync: this,
           ),
         );
         setState(() {
-          _repository.insert(_repository.length, repo);
+          _repoCard.insert(_repoCard.length, repoCard);
         });
-        repo.animationController.forward();
+        repoCard.animationController.forward();
       } else {
         api_no_limit = true;
       }
@@ -178,8 +182,8 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
           Loading(searching: searching, api_no_limit: api_no_limit,),
           Flexible(
             child: ListView.builder(
-              itemBuilder: (_, int index) => _repository[index],
-              itemCount: _repository.length,
+              itemBuilder: (_, int index) => _repoCard[index],
+              itemCount: _repoCard.length,
               padding: EdgeInsets.all(8.0),
             ),
           )
