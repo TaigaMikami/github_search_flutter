@@ -132,6 +132,18 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
   DropdownButton _countDown() => DropdownButton<int> (
     items: [
       DropdownMenuItem(
+        value: 3,
+        child: Text(
+          "3",
+        ),
+      ),
+      DropdownMenuItem(
+        value: 5,
+        child: Text(
+          "5",
+        ),
+      ),
+      DropdownMenuItem(
         value: 10,
         child: Text(
           "10",

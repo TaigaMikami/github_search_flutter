@@ -53,7 +53,7 @@ class RepositoryCard extends StatelessWidget {
                           Chip(
                             backgroundColor: Colors.greenAccent,
                             padding: EdgeInsets.all(0.0),
-                            label: Text(repository.language, style: TextStyle(color: Colors.white),),
+                            label: Text(repository.language, style: TextStyle(color: Colors.white, fontSize: 12.0),),
                           )
                         ]
                       ),
