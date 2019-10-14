@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:github_search/model/Repository.dart';
+import 'package:github_search/widgets/loading.dart';
+import 'package:github_search/helpers/url_create.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
-import 'package:github_search/helpers/url_create.dart';
 
 class RepositoryScreen extends StatefulWidget {
   @override
@@ -162,38 +163,6 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     );
   }
 
-  Widget loading(){
-    if(searching){
-      return new Container(
-        height: 60.0,
-        child:new Center(
-          child:new CircularProgressIndicator()
-        ),
-      );
-    }else if(api_no_limit) {
-      return new Card(
-        child: new Container(
-          height: 80.0,
-          color: Colors.red,
-          child: new Center(
-            child: new Text(
-              "API LIMIT EXCEDED",
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 22.0
-              ),
-            ),
-          )
-        ),
-      );
-    }else{
-      return new Container(
-
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -206,7 +175,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
             child: _buildTextComposer(),
           ),
           Divider(height: 2.0,),
-          loading(),
+          Loading(searching: searching, api_no_limit: api_no_limit,),
           Flexible(
             child: ListView.builder(
               itemBuilder: (_, int index) => _repository[index],
