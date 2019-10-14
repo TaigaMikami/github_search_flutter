@@ -32,7 +32,6 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
       resBody = json.decode(res.body);
     });
     var resItems = resBody['items'];
-    print(resItems[0]);
     int itemCount = min(count, resItems.length);
     for (int i = 0; i < itemCount; i++) {
       if (resItems[i]['owner']['avatar_url'] != null) {
