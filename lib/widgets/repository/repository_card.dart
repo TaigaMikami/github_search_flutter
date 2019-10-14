@@ -16,12 +16,15 @@ class RepositoryCard extends StatelessWidget {
       ),
       axisAlignment: 0.0,
       child: Container(
-        margin: EdgeInsets.only(bottom: 15.0),
+        margin: EdgeInsets.only(right: 20.0, left: 20.0, bottom: 15.0),
         child: RaisedButton(
           onPressed: null,
+          padding: const EdgeInsets.all(0.0),
           child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white
+            ),
             padding: EdgeInsets.symmetric(vertical: 12.0),
-            margin: const EdgeInsets.only(right: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
