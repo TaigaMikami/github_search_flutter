@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:github_search/widgets/loading.dart';
 import 'package:github_search/helpers/url_create.dart';
-import 'package:github_search/widgets/repository/repository_card.dart';
+import 'package:github_search/widgets/repository/repository_list.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
@@ -13,7 +13,7 @@ class RepositoryScreen extends StatefulWidget {
 }
 
 class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProviderStateMixin {
-  final List<RepositoryCard> _repoCard = <RepositoryCard>[];
+  final List<RepositoryList> _repoList = <RepositoryList>[];
   final TextEditingController _textController = new TextEditingController();
 
   bool searching = false, api_no_limit = false;
@@ -24,10 +24,10 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
   Future _getRepositories(String text) async {
     setState(() {
       searching = true;
-      _repoCard.clear();
+      _repoList.clear();
     });
     _textController.clear();
-    var res = await http.get(Uri.encodeFull(UrlCreate.repositoryUrl(text, sort)), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(UrlCreate.repositoriesUrl(text, sort)), headers: {"Accept": "application/json"});
     setState(() {
       resBody = json.decode(res.body);
     });
@@ -36,20 +36,20 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
     for (int i = 0; i < itemCount; i++) {
       if (resItems[i]['owner']['avatar_url'] != null) {
         Repository repo = new Repository(
-          full_name: resItems[i]['full_name'],
+          fullName: resItems[i]['full_name'],
           image: resItems[i]['owner']['avatar_url'],
           description: resItems[i]['description'],
           language: resItems[i]['language'],
-          stargazers_count: resItems[i]['stargazers_count'],
-          forks_count: resItems[i]['forks_count'],
-          watchers_count: resItems[i]['watchers_count'],
-          open_issues_count: resItems[i]['open_issues_count'],
-          html_url: resItems[i]['html_url'],
-          home_page: resItems[i]['home_page'],
-          created_at: DateTime.parse(resItems[i]['created_at']),
-          updated_at: DateTime.parse(resItems[i]['updated_at']),
+          stargazersCount: resItems[i]['stargazers_count'],
+          forksCount: resItems[i]['forks_count'],
+          watchersCount: resItems[i]['watchers_count'],
+          openIssuesCount: resItems[i]['open_issues_count'],
+          htmlUrl: resItems[i]['html_url'],
+          homePage: resItems[i]['home_page'],
+          createdAt: DateTime.parse(resItems[i]['created_at']),
+          updatedAt: DateTime.parse(resItems[i]['updated_at']),
         );
-        RepositoryCard repoCard = new RepositoryCard(
+        RepositoryList repoList = new RepositoryList(
           repository: repo,
             animationController: AnimationController(
             duration: Duration(milliseconds: 700),
@@ -57,9 +57,9 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
           ),
         );
         setState(() {
-          _repoCard.insert(_repoCard.length, repoCard);
+          _repoList.insert(_repoList.length, repoList);
         });
-        repoCard.animationController.forward();
+        repoList.animationController.forward();
       } else {
         api_no_limit = true;
       }
@@ -201,8 +201,8 @@ class _RepositoryScreenState extends State<RepositoryScreen>  with TickerProvide
           Loading(searching: searching, api_no_limit: api_no_limit,),
           Flexible(
             child: ListView.builder(
-              itemBuilder: (_, int index) => _repoCard[index],
-              itemCount: _repoCard.length,
+              itemBuilder: (_, int index) => _repoList[index],
+              itemCount: _repoList.length,
               padding: EdgeInsets.all(8.0),
             ),
           )

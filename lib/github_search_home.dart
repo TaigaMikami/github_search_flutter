@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_search/pages/repository_compare_screen.dart';
 import 'package:github_search/pages/repository_screen.dart';
 import 'package:github_search/pages/gist_screen.dart';
 import 'package:github_search/pages/user_screen.dart';
@@ -13,6 +14,7 @@ class _GithubSearchHomeState extends State<GithubSearchHome> with SingleTickerPr
   TabController _tabController;
   final List<Tab> screenTabs = <Tab>[
     Tab(text: 'Repository',),
+    Tab(text: 'Compare',),
     Tab(text: 'Gist',),
     Tab(text: 'User',),
   ];
@@ -51,6 +53,7 @@ class _GithubSearchHomeState extends State<GithubSearchHome> with SingleTickerPr
         controller: _tabController,
         children: <Widget>[
           RepositoryScreen(),
+          RepositoryCompareScreen(),
           GistScreen(),
           UserScreen(),
         ],

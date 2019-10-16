@@ -21,8 +21,8 @@ class RepositoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String home_page = repository.home_page == null ? '' : repository.home_page;
     String description = repository.description == null ? '' : repository.description;
+    String homePage = repository.homePage == null ? '' : repository.homePage;
     return SizeTransition(
       sizeFactor: CurvedAnimation(
         parent: animationController,
@@ -32,19 +32,24 @@ class RepositoryCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(right: 20.0, left: 20.0, bottom: 15.0),
         child: RaisedButton(
-          onPressed: () => _launchURL(repository.html_url),
+          onPressed: () => _launchURL(repository.htmlUrl),
           padding: const EdgeInsets.all(0.0),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white
             ),
             padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.only(right: 16.0),
-                  child: Image.network(repository.image, width: 100.0, height: 100.0,),
+                  margin: const EdgeInsets.all(10.0),
+                  child: Image.network(repository.image, width: 70.0, height: 70.0,),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 15.0),),
+                Text(
+                  repository.fullName,
+                  style: Theme.of(context).textTheme.title,
                 ),
                 Expanded(
                   child: Column(
@@ -53,18 +58,7 @@ class RepositoryCard extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Text(
-                            repository.full_name,
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Chip(
-                            backgroundColor: Colors.greenAccent,
-                            padding: EdgeInsets.all(0.0),
-                            label: Text(repository.language, style: TextStyle(color: Colors.white, fontSize: 12.0),),
-                          ),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Text(
-                            home_page
+                            homePage
                           )
                         ]
                       ),
@@ -72,26 +66,47 @@ class RepositoryCard extends StatelessWidget {
                         description,
                         style: TextStyle(fontSize: 12.0),
                       ),
-                      Padding(padding: EdgeInsets.only(bottom: 20.0),),
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.star, size: 15.0,),
-                          Text(' ${repository.stargazers_count}'),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.codeBranch, size: 15.0,),
-                          Text(' ${repository.forks_count}'),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.eye, size: 15.0,),
-                          Text(' ${repository.watchers_count}'),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.infoCircle, size: 15.0,),
-                          Text(' ${repository.open_issues_count}'),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Text('created_at : ${_formatDate(repository.created_at)}'),
-                          Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Text('updated_at : ${_formatDate(repository.updated_at)}'),
-                        ],
-                      )
+                      Padding(padding: EdgeInsets.only(bottom: 15.0),),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 55.0),
+                        child: Table(
+                          border: TableBorder(
+                            horizontalInside: BorderSide(
+                              color: Colors.black38,
+                              style: BorderStyle.solid,
+                              width: 1.0
+                            )
+                          ),
+                          children: [
+                            TableRow(
+                              children: [
+                                Icon(Icons.star, size: 15.0,),
+                                Text(' ${repository.stargazersCount}'),
+                              ]
+                            ),
+                            TableRow(
+                              children: [
+                                Icon(FontAwesomeIcons.codeBranch, size: 15.0,),
+                                Text(' ${repository.forksCount}'),
+                              ]
+                            ),
+                            TableRow(
+                              children: [
+                                Icon(FontAwesomeIcons.eye, size: 15.0,),
+                                Text(' ${repository.watchersCount}'),
+                              ]
+                            ),
+                            TableRow(
+                              children: [
+                                Icon(FontAwesomeIcons.infoCircle, size: 15.0,),
+                                Text(' ${repository.openIssuesCount}'),
+                              ]
+                            ),
+                          ]
+                        )
+                      ),
+                      Text('created_at : ${_formatDate(repository.createdAt)}'),
+                      Text('updated_at : ${_formatDate(repository.updatedAt)}'),
                     ],
                   ),
                 )
