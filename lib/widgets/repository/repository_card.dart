@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:github_search/helpers/language_badge.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +25,7 @@ class RepositoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String description = repository.description == null ? '' : repository.description;
     String homePage = repository.homePage == null ? '' : repository.homePage;
+    String language = repository.language == null ? 'others' : repository.language;
     return SizeTransition(
       sizeFactor: CurvedAnimation(
         parent: animationController,
@@ -53,6 +54,8 @@ class RepositoryCard extends StatelessWidget {
                   repository.fullName,
                   style: Theme.of(context).textTheme.title,
                 ),
+                Padding(padding: EdgeInsets.only(bottom: 5.0),),
+                LanguageBadge(language: language),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

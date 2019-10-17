@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
+import 'package:github_search/helpers/language_badge.dart';
 import 'dart:html' as html;
 
 class RepositoryList extends StatelessWidget {
@@ -25,7 +25,7 @@ class RepositoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     String description = repository.description == null ? '' : repository.description;
     String homePage = repository.homePage == null ? '' : repository.homePage;
-    String language = repository.language == null ? '' : repository.language;
+    String language = repository.language == null ? 'others' : repository.language;
     return SizeTransition(
       sizeFactor: CurvedAnimation(
         parent: animationController,
@@ -60,16 +60,17 @@ class RepositoryList extends StatelessWidget {
                             style: Theme.of(context).textTheme.title,
                           ),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Badge(
-                            badgeColor: Colors.deepPurple,
-                            shape: BadgeShape.square,
-                            borderRadius: 20,
-                            toAnimate: true,
-                            badgeContent: Text(
-                              language,
-                              style: TextStyle(color: Colors.white, fontSize: 10.0),
-                            ),
-                          ),
+//                          Badge(
+//                            badgeColor: Colors.deepPurple,
+//                            shape: BadgeShape.square,
+//                            borderRadius: 20,
+//                            toAnimate: true,
+//                            badgeContent: Text(
+//                              language,
+//                              style: TextStyle(color: Colors.white, fontSize: 10.0),
+//                            ),
+//                          ),
+                          LanguageBadge(language: language),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
                           Text(
                             homePage
