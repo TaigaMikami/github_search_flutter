@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
 import 'dart:html' as html;
 
@@ -10,6 +11,7 @@ class RepositoryList extends StatelessWidget {
 
   final Repository repository;
   final AnimationController animationController;
+  var parser = EmojiParser();
 
   String _formatDate(DateTime dateTime) {
     return (DateFormat.yMMMd()).format(dateTime);
@@ -81,17 +83,17 @@ class RepositoryList extends StatelessWidget {
                       Padding(padding: EdgeInsets.only(bottom: 20.0),),
                       Row(
                         children: <Widget>[
-                          Icon(Icons.star, size: 15.0,),
+                          Text(parser.emojify(':star:')),
                           Text(' ${repository.stargazersCount}'),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.codeBranch, size: 15.0,),
+                          Text(parser.emojify(':fork_and_knife:')),
                           Text(' ${repository.forksCount}'),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.eye, size: 15.0,),
+                          Text(parser.emojify(':eyes:')),
                           Text(' ${repository.watchersCount}'),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
-                          Icon(FontAwesomeIcons.infoCircle, size: 15.0,),
-                          Text(' ${repository.openIssuesCount}'),
+                          Text(parser.emojify(':question:')),
+                          Text('${repository.openIssuesCount}'),
                           Padding(padding: EdgeInsets.only(right: 15.0),),
                           Text('created_at : ${_formatDate(repository.createdAt)}'),
                           Padding(padding: EdgeInsets.only(right: 15.0),),

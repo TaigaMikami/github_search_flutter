@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:github_search/model/Repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ class RepositoryCard extends StatelessWidget {
 
   final Repository repository;
   final AnimationController animationController;
+  var parser = EmojiParser();
 
   String _formatDate(DateTime dateTime) {
     return (DateFormat.yMMMd()).format(dateTime);
@@ -76,25 +78,33 @@ class RepositoryCard extends StatelessWidget {
                           children: [
                             TableRow(
                               children: [
-                                Icon(Icons.star, size: 15.0,),
+                                Center(
+                                  child: Text(parser.emojify(':star:'), ),
+                                ),
                                 Text(' ${repository.stargazersCount}'),
                               ]
                             ),
                             TableRow(
                               children: [
-                                Icon(FontAwesomeIcons.codeBranch, size: 15.0,),
+                                Center(
+                                  child: Text(parser.emojify(':fork_and_knife:')),
+                                ),
                                 Text(' ${repository.forksCount}'),
                               ]
                             ),
                             TableRow(
                               children: [
-                                Icon(FontAwesomeIcons.eye, size: 15.0,),
+                                Center(
+                                  child: Text(parser.emojify(':eyes:')),
+                                ),
                                 Text(' ${repository.watchersCount}'),
                               ]
                             ),
                             TableRow(
                               children: [
-                                Icon(FontAwesomeIcons.infoCircle, size: 15.0,),
+                                Center(
+                                  child: Text(parser.emojify(':question:')),
+                                ),
                                 Text(' ${repository.openIssuesCount}'),
                               ]
                             ),
@@ -105,8 +115,14 @@ class RepositoryCard extends StatelessWidget {
                         description,
                         style: TextStyle(fontSize: 12.0),
                       ),
-                      Text('created_at : ${_formatDate(repository.createdAt)}'),
-                      Text('updated_at : ${_formatDate(repository.updatedAt)}'),
+                      Text(
+                        'created_at : ${_formatDate(repository.createdAt)}',
+                        style: TextStyle(fontSize: 11.0),
+                      ),
+                      Text(
+                        'updated_at : ${_formatDate(repository.updatedAt)}',
+                        style: TextStyle(fontSize: 11.0),
+                      ),
                     ],
                   ),
                 )

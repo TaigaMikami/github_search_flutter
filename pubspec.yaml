@@ -23,6 +23,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: any
   font_awesome_flutter: any
+  flutter_emoji: any
   badges: any
   intl: any
 
