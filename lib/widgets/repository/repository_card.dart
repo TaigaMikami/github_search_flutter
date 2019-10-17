@@ -62,11 +62,6 @@ class RepositoryCard extends StatelessWidget {
                           )
                         ]
                       ),
-                      Text(
-                        description,
-                        style: TextStyle(fontSize: 12.0),
-                      ),
-                      Padding(padding: EdgeInsets.only(bottom: 15.0),),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 55.0),
                         child: Table(
@@ -77,6 +72,7 @@ class RepositoryCard extends StatelessWidget {
                               width: 1.0
                             )
                           ),
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                           children: [
                             TableRow(
                               children: [
@@ -104,6 +100,10 @@ class RepositoryCard extends StatelessWidget {
                             ),
                           ]
                         )
+                      ),
+                      Text(
+                        description,
+                        style: TextStyle(fontSize: 12.0),
                       ),
                       Text('created_at : ${_formatDate(repository.createdAt)}'),
                       Text('updated_at : ${_formatDate(repository.updatedAt)}'),
