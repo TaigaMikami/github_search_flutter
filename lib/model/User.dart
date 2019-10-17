@@ -2,14 +2,16 @@ class User {
   User({
     this.name,
     this.image,
-    this.public_repos,
+    this.publicRepos,
     this.followers,
-    this.following
+    this.following,
+    this.htmlUrl,
   });
 
   final String name;
   final String image;
-  final int public_repos;
+  final int publicRepos;
   final int followers;
   final int following;
+  final String htmlUrl;
 }

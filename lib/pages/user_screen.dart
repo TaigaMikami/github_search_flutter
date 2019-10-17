@@ -24,19 +24,19 @@ class _UserScreenState extends State<UserScreen> with TickerProviderStateMixin {
     });
     _textController.clear();
     var res = await http.get(Uri.encodeFull(UrlCreate.userUrl(text)), headers: {"Accept": "application/json"});
-    print("ほげ $res");
     setState(() {
       resBody = json.decode(res.body);
     });
     if (resBody['avatar_url'] != null) {
       String username = resBody['name'] == null ? text : resBody['name'];
+      print(resBody);
       User user = new User(
         name: username,
         image: resBody['avatar_url'],
-        public_repos: resBody['public_repos'],
+        publicRepos: resBody['public_repos'],
         followers: resBody['followers'],
         following: resBody['following'],
-
+        htmlUrl: resBody['html_url'],
       );
       UserList userList = new UserList(
         user: user,

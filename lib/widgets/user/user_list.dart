@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:github_search/model/User.dart';
+import 'dart:html' as html;
 
 class UserList extends StatelessWidget {
   UserList({this.user, this.animationController});
   final User user;
   final AnimationController animationController;
+
+  _launchURL(url) {
+    html.window.open(url, '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +22,13 @@ class UserList extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
         child: RaisedButton(
-          color: Colors.white,
-          onPressed: null,
+          onPressed: () => _launchURL(user.htmlUrl),
+          padding: EdgeInsets.all(0.0),
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 12.0),
-            margin: const EdgeInsets.only(right: 5.0),
+            decoration: BoxDecoration(
+              color: Colors.white
+            ),
+            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -38,7 +45,7 @@ class UserList extends StatelessWidget {
                         style: Theme.of(context).textTheme.title
                       ),
                       new Padding(padding: EdgeInsets.only(bottom: 30.0)),
-                      new Text('Public Repo : ${user.public_repos}'),
+                      new Text('Public Repo : ${user.publicRepos}'),
                       new Padding(padding: EdgeInsets.only(bottom: 6.0)),
                       new Row(
                         children: <Widget>[
